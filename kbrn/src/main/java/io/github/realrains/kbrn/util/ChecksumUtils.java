@@ -4,7 +4,7 @@ import io.github.realrains.kbrn.KBRN;
 
 public final class ChecksumUtils {
 
-    private static final char[] CHECKSUM_WEIGHTS = {1, 3, 7, 1, 3, 7, 1, 3, 5};
+    private static final char[] CHECKSUM_WEIGHTS = { 1, 3, 7, 1, 3, 7, 1, 3, 5 };
 
     private ChecksumUtils() {
         throw new UnsupportedOperationException("Utility class cannot be instantiated");
@@ -48,5 +48,4 @@ public final class ChecksumUtils {
         }
         return checksum(body.toCharArray());
     }
-
 }

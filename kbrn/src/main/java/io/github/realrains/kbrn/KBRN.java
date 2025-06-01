@@ -32,6 +32,7 @@ import static io.github.realrains.kbrn.util.KbrnFormatUtils.toDefaultFormat;
  * println(kbrn.hasValidChecksum());   // true
  * }
  * </pre>
+ *
  * @see ChecksumUtils
  * @see KbrnFormatUtils
  */
@@ -158,8 +159,7 @@ public class KBRN {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass())
-            return false;
+        if (o == null || getClass() != o.getClass()) { return false; }
         KBRN kbrn = (KBRN) o;
         return Objects.equals(value, kbrn.value);
     }

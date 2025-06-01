@@ -20,12 +20,12 @@ class KbrnFormatUtilsTest {
     @ParameterizedTest
     @NullSource
     @ValueSource(strings = {
-            "",
-            "012345678",
-            "01234567890",
-            "012345678a",
-            "abcdefghij",
-            "012-34-56789",
+        "",
+        "012345678",
+        "01234567890",
+        "012345678a",
+        "abcdefghij",
+        "012-34-56789",
     })
     void checkInvalidDefaultFormat(String value) {
         assertFalse(KbrnFormatUtils.isValidFormat(value));
@@ -40,15 +40,15 @@ class KbrnFormatUtilsTest {
     @ParameterizedTest
     @NullSource
     @ValueSource(strings = {
-            "",
-            "--",
-            "012-34-5678",
-            "01-234-56789",
-            "0-1234-56789",
-            "012-34-567890",
-            "012-34-5678a",
-            "abc-de-fghij",
-            "0123456789",
+        "",
+        "--",
+        "012-34-5678",
+        "01-234-56789",
+        "0-1234-56789",
+        "012-34-567890",
+        "012-34-5678a",
+        "abc-de-fghij",
+        "0123456789",
     })
     void checkInvalidDelimitedFormat(String value) {
         assertFalse(KbrnFormatUtils.isValidDelimitedFormat(value));

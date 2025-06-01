@@ -143,9 +143,9 @@ class KbrnTest {
     @ParameterizedTest
     @DisplayName("잘못된 체크섬을 가진 KBRN은 검증에 실패한다")
     @CsvSource({
-            "2208162510, 220-81-62510",
-            "1208147522, 120-81-47522",
-            "1248100999, 124-81-00999"
+        "2208162510, 220-81-62510",
+        "1208147522, 120-81-47522",
+        "1248100999, 124-81-00999"
     })
     void invalidChecksumTest(String kbrnValue, String kbrnDelimited) {
         KBRN kbrn1 = KBRN.from(kbrnValue);
@@ -157,7 +157,7 @@ class KbrnTest {
 
     @ParameterizedTest
     @DisplayName("유효하지 않은 길이의 KBRN 값으로 객체 생성 시 예외를 던진다")
-    @ValueSource(strings = {"123456789", "12345678901", "", "123456789A"})
+    @ValueSource(strings = { "123456789", "12345678901", "", "123456789A" })
     void invalidLengthKbrnTest(String invalidValue) {
         assertThrows(IllegalArgumentException.class, () -> KBRN.from(invalidValue));
     }
@@ -182,5 +182,4 @@ class KbrnTest {
     void invalidDelimitedFormatTest(String invalidDelimitedValue) {
         assertThrows(IllegalArgumentException.class, () -> KBRN.fromDelimited(invalidDelimitedValue));
     }
-
 }

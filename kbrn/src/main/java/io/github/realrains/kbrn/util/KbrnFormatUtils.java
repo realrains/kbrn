@@ -7,7 +7,7 @@ public final class KbrnFormatUtils {
     public static final Pattern DEFAULT_KBRN_PATTERN = Pattern.compile("^\\d{10}$");
     public static final Pattern DELIMITED_KBRN_PATTERN = Pattern.compile("^\\d{3}-\\d{2}-\\d{5}$");
 
-    private KbrnFormatUtils() {}
+    private KbrnFormatUtils() { }
 
     /**
      * 주어진 값이 지정된 패턴과 일치하는지 검증합니다.
@@ -73,5 +73,4 @@ public final class KbrnFormatUtils {
         }
         return value.replace("-", "");
     }
-
 }
