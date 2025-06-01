@@ -1,0 +1,11 @@
+.vs
+.vscode
+.gradle
+.settings
+.classpath
+.project
+.idea
+.work
+build
+bin
+out
