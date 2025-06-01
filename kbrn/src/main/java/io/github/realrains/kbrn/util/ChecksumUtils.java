@@ -1,6 +1,8 @@
 package io.github.realrains.kbrn.util;
 
-public class ChecksumUtils {
+import io.github.realrains.kbrn.KBRN;
+
+public final class ChecksumUtils {
 
     private static final char[] CHECKSUM_WEIGHTS = {1, 3, 7, 1, 3, 7, 1, 3, 5};
 
@@ -9,11 +11,12 @@ public class ChecksumUtils {
     }
 
     /**
-     * 주어진 사업자등록번호 앞 9자리에 대한 마지막 체크섬 문자 [0-9] 를 계산합니다.
+     * 사업자등록번호 앞 9자리 문자 (body) 에 대한 체크섬을 계산합니다.
      *
-     * @param body [0-9] 문자로 이루어진 char 배열
-     * @return [0-9] 중 하나의 문자 체크섬
-     * @throws IllegalArgumentException body 가 null 이거나 길이가 9가 아닐 경우 혹은 [0-9] 문자가 아닌 경우
+     * @param body 숫자로 구성된 길이 9의 문자 배열.
+     * @return 계산된 체크섬 문자.
+     * @throws IllegalArgumentException 입력이 유효한 길이 9의 문자 배열이 아니거나 숫자가 아닌 문자를 포함하는 경우.
+     * @see KBRN#body()
      */
     public static char checksum(char[] body) {
         if (body == null || body.length != 9) {
@@ -32,11 +35,12 @@ public class ChecksumUtils {
     }
 
     /**
-     * 주어진 사업자등록번호 앞 9자리에 대한 마지막 체크섬 문자 [0-9] 를 계산합니다.
+     * 사업자등록번호 앞 9자리 문자 (body) 에 대한 체크섬을 계산합니다.
      *
-     * @param body [0-9] 문자로 이루어진 문자열
-     * @return [0-9] 중 하나의 문자 체크섬으로 이루어진 길이 1 의 String
-     * @throws IllegalArgumentException value 가 null 이거나 길이가 9가 아닐 경우 혹은 [0-9] 문자가 아닌 경우
+     * @param body 숫자로 구성된 길이 9의 문자열.
+     * @return 계산된 체크섬 문자.
+     * @throws IllegalArgumentException 입력이 유효한 길이 9의 문자열이 아니거나 숫자가 아닌 문자를 포함하는 경우.
+     * @see KBRN#body()
      */
     public static char checksum(String body) {
         if (body == null) {
