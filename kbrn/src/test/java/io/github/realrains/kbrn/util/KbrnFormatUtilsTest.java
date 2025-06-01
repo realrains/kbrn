@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class KbrnFormatUtilsTest {
 
     @ParameterizedTest(name = "{0}")
-    @CsvFileSource(resources = "/kbrn_sample.txt", useHeadersInDisplayName = true)
+    @CsvFileSource(resources = "/kbrn_sample.csv", useHeadersInDisplayName = true)
     void checkValidDefaultFormat(String value) {
         assertTrue(KbrnFormatUtils.isValidFormat(value));
     }
@@ -32,7 +32,7 @@ class KbrnFormatUtilsTest {
     }
 
     @ParameterizedTest(name = "{1}")
-    @CsvFileSource(resources = "/kbrn_sample.txt", useHeadersInDisplayName = true)
+    @CsvFileSource(resources = "/kbrn_sample.csv", useHeadersInDisplayName = true)
     void checkValidDeliminatedFormat(String kbrn, String delimitedKbrn) {
         assertTrue(KbrnFormatUtils.isValidDelimitedFormat(delimitedKbrn));
     }
@@ -55,13 +55,13 @@ class KbrnFormatUtilsTest {
     }
 
     @ParameterizedTest(name = "{0} -> {1}")
-    @CsvFileSource(resources = "/kbrn_sample.txt", useHeadersInDisplayName = true)
+    @CsvFileSource(resources = "/kbrn_sample.csv", useHeadersInDisplayName = true)
     void fromDefaultToDelimited(String kbrn, String delimitedKbrn) {
         assertEquals(KbrnFormatUtils.toDelimitedFormat(kbrn), delimitedKbrn);
     }
 
     @ParameterizedTest(name = "{1} -> {0}")
-    @CsvFileSource(resources = "/kbrn_sample.txt", useHeadersInDisplayName = true)
+    @CsvFileSource(resources = "/kbrn_sample.csv", useHeadersInDisplayName = true)
     void fromDelimitedToDefaultFormat(String kbrn, String delimitedKbrn) {
         assertEquals(KbrnFormatUtils.toDefaultFormat(delimitedKbrn), kbrn);
     }

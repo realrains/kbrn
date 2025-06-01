@@ -117,7 +117,7 @@ class KbrnTest {
 
     @ParameterizedTest
     @DisplayName("형식이 다른 동일한 사업자등록번호는 동일한 KBRN 객체로 생성된다")
-    @CsvFileSource(resources = "/kbrn_sample.txt", numLinesToSkip = 1)
+    @CsvFileSource(resources = "/kbrn_sample.csv", numLinesToSkip = 1)
     void parameterizedValidKbrnTest(String kbrnValue, String kbrnDelimited) {
         KBRN kbrn1 = KBRN.from(kbrnValue);
         KBRN kbrn2 = KBRN.fromDelimited(kbrnDelimited);
@@ -131,7 +131,7 @@ class KbrnTest {
 
     @ParameterizedTest
     @DisplayName("올바른 체크섬을 가진 KBRN은 검증에 성공한다")
-    @CsvFileSource(resources = "/kbrn_sample.txt", numLinesToSkip = 1)
+    @CsvFileSource(resources = "/kbrn_sample.csv", numLinesToSkip = 1)
     void validChecksumTest(String kbrnValue, String kbrnDelimited) {
         KBRN kbrn1 = KBRN.from(kbrnValue);
         KBRN kbrn2 = KBRN.fromDelimited(kbrnDelimited);

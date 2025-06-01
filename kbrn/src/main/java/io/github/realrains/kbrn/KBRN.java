@@ -141,7 +141,7 @@ public class KBRN {
      * @return 검증번호가 유효하면 true, 그렇지 않으면 false
      */
     public boolean hasValidChecksum() {
-        return checksum() == ChecksumUtils.checksum(body());
+        return ChecksumUtils.hasValidChecksum(value);
     }
 
     /**

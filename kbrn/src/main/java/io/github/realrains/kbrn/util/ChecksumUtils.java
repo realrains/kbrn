@@ -2,6 +2,8 @@ package io.github.realrains.kbrn.util;
 
 import io.github.realrains.kbrn.KBRN;
 
+import static io.github.realrains.kbrn.util.KbrnFormatUtils.isValidFormat;
+
 public final class ChecksumUtils {
 
     private static final char[] CHECKSUM_WEIGHTS = { 1, 3, 7, 1, 3, 7, 1, 3, 5 };
@@ -47,5 +49,24 @@ public final class ChecksumUtils {
             throw new IllegalArgumentException("Input must be a string of length 9");
         }
         return checksum(body.toCharArray());
+    }
+
+    /**
+     * 주어진 사업자등록번호 문자열이 유효한 체크섬을 가지고 있는지 확인합니다.
+     *
+     * @param value 10자리 숫자로 구성된 사업자등록번호 문자열.
+     * @return 유효한 체크섬이면 true, 그렇지 않으면 false.
+     * @throws IllegalArgumentException 주어진 값이 유효한 형식이 아닌 경우.
+     * @see KBRN#hasValidChecksum()
+     */
+    public static boolean hasValidChecksum(String value) {
+        if (!isValidFormat(value)) {
+            throw new IllegalArgumentException("Value must be in default format (e.g., \"1234567890\") : " + value);
+        }
+
+        char[] body = value.substring(0, 9).toCharArray();
+        char expectedChecksum = value.charAt(9);
+        char actualChecksum = checksum(body);
+        return expectedChecksum == actualChecksum;
     }
 }
