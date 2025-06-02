@@ -14,20 +14,20 @@
 
 ```java
 // 기본 형식(10자리 숫자) 검증
-boolean isValid = KbrnFormatUtils.isValidFormat("1208147521"); // true
+boolean isValid = KbrnUtils.isValidFormat("1208147521"); // true
 
 // 구분 기호 형식(3-2-5 자리 숫자) 검증
-boolean isDelimitedValid = KbrnFormatUtils.isValidDelimitedFormat("120-81-47521"); // true
+boolean isDelimitedValid = KbrnUtils.isValidDelimitedFormat("120-81-47521"); // true
 ```
 
 **형식 변환:**
 
 ```java
 // 기본 형식 → 구분 기호 형식으로 변환
-String delimited = KbrnFormatUtils.toDelimitedFormat("1208147521"); // "120-81-47521"
+String delimited = KbrnUtils.toDelimitedFormat("1208147521"); // "120-81-47521"
 
 // 구분 기호 형식 → 기본 형식으로 변환
-String plain = KbrnFormatUtils.toDefaultFormat("120-81-47521"); // "1208147521"
+String plain = KbrnUtils.toDefaultFormat("120-81-47521"); // "1208147521"
 ```
 
 **체크섬 계산 및 검증:**
@@ -35,10 +35,10 @@ String plain = KbrnFormatUtils.toDefaultFormat("120-81-47521"); // "1208147521"
 ```java
 // 체크섬 계산
 String body = "120814752"; // 앞 9자리
-ChecksumUtils.checksum(body); // '1'
+KbrnUtils.checksum(body); // '1'
 
 // 체크섬 유효성 검증
-ChecksumUtils.hasValidChecksum("1208147521"); // true
+KbrnUtils.hasValidChecksum("1208147521"); // true
 ```
 
 ### 2. 사업자등록번호 객체 (KBRN)
