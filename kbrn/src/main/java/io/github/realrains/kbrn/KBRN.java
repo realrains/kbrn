@@ -18,8 +18,8 @@ import static io.github.realrains.kbrn.util.KbrnFormatUtils.isValidFormat;
  * 사용 예시:
  * <pre>
  * {@code
- * KBRN kbrn = KBRN.from("1208147521");
- * KBRN kbrn2 = KBRN.from("120-81-47521");
+ * KBRN kbrn = KBRN.valueOf("1208147521");
+ * KBRN kbrn2 = KBRN.valueOf("120-81-47521");
  * println(kbrn.equals(kbrn2));        // true
  * println(kbrn.value());              // "1208147521"
  * println(kbrn.formattedValue());     // "120-81-47521"
