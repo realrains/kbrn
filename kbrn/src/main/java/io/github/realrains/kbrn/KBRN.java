@@ -1,12 +1,10 @@
 package io.github.realrains.kbrn;
 
-import io.github.realrains.kbrn.util.ChecksumUtils;
-import io.github.realrains.kbrn.util.KbrnFormatUtils;
-
 import java.util.Objects;
 
-import static io.github.realrains.kbrn.util.KbrnFormatUtils.isValidDelimitedFormat;
-import static io.github.realrains.kbrn.util.KbrnFormatUtils.isValidFormat;
+import static io.github.realrains.kbrn.KbrnUtils.hasValidChecksum;
+import static io.github.realrains.kbrn.KbrnUtils.isValidDefaultFormat;
+import static io.github.realrains.kbrn.KbrnUtils.isValidDelimitedFormat;
 
 /**
  * 사업자등록번호 (KBRN) 클래스
@@ -32,8 +30,7 @@ import static io.github.realrains.kbrn.util.KbrnFormatUtils.isValidFormat;
  * }
  * </pre>
  *
- * @see ChecksumUtils
- * @see KbrnFormatUtils
+ * @see KbrnUtils
  */
 public class KBRN {
 
@@ -41,10 +38,10 @@ public class KBRN {
     private final String value;
 
     protected KBRN(String value) {
-        if (!isValidFormat(value)) {
+        if (!isValidDefaultFormat(value)) {
             throw new IllegalArgumentException("Value must be in default format (e.g., \"1234567890\") : " + value);
         }
-        if (!ChecksumUtils.hasValidChecksum(value)) {
+        if (!hasValidChecksum(value)) {
             throw new IllegalArgumentException("Value must have a valid checksum: " + value);
         }
         this.value = value;
@@ -58,7 +55,7 @@ public class KBRN {
      * @throws IllegalArgumentException 주어진 값이 유효한 형식이 아닌 경우
      */
     public static KBRN valueOf(String value) {
-        if (isValidFormat(value) || isValidDelimitedFormat(value)) {
+        if (isValidDefaultFormat(value) || isValidDelimitedFormat(value)) {
             return new KBRN(value.replace(DELIMITER, ""));
         }
         throw new IllegalArgumentException("Value must be in valid format (e.g., \"1234567890\" or \"123-45-67890\") : " + value);
@@ -125,15 +122,6 @@ public class KBRN {
      */
     public char checksum() {
         return value.charAt(9);
-    }
-
-    /**
-     * 사업자등록번호의 검증번호가 유효한지 검사합니다.
-     *
-     * @return 검증번호가 유효하면 true, 그렇지 않으면 false
-     */
-    public boolean hasValidChecksum() {
-        return ChecksumUtils.hasValidChecksum(value);
     }
 
     /**
