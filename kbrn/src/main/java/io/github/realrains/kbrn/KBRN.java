@@ -5,9 +5,7 @@ import io.github.realrains.kbrn.util.KbrnFormatUtils;
 
 import java.util.Objects;
 
-import static io.github.realrains.kbrn.util.KbrnFormatUtils.isValidDelimitedFormat;
 import static io.github.realrains.kbrn.util.KbrnFormatUtils.isValidFormat;
-import static io.github.realrains.kbrn.util.KbrnFormatUtils.toDefaultFormat;
 
 /**
  * 사업자등록번호 (KBRN) 클래스
@@ -38,6 +36,7 @@ import static io.github.realrains.kbrn.util.KbrnFormatUtils.toDefaultFormat;
  */
 public class KBRN {
 
+    private static final String DELIMITER = "-";
     private final String value;
 
     protected KBRN(String value) {
@@ -50,26 +49,15 @@ public class KBRN {
     /**
      * 기본 형식의 사업자등록번호로부터 KBRN 객체를 생성합니다.
      *
-     * @param value 10자리 숫자로 구성된 사업자등록번호 문자열
+     * @param value 10자리 숫자로 구성된 사업자등록번호 문자열 (예: "1234567890" 또는 "123-45-67890")
      * @return KBRN 객체
      * @throws IllegalArgumentException 주어진 값이 유효한 형식이 아닌 경우
      */
-    public static KBRN from(String value) {
-        return new KBRN(value);
-    }
-
-    /**
-     * 구분 기호가 있는 형식의 사업자등록번호로부터 KBRN 객체를 생성합니다.
-     *
-     * @param value 구분 기호가 있는 형식 (예: "123-45-67890") 의 사업자등록번호 문자열
-     * @return KBRN 객체
-     * @throws IllegalArgumentException 주어진 값이 유효한 구분 기호 형식이 아닌 경우
-     */
-    public static KBRN fromDelimited(String value) {
-        if (!isValidDelimitedFormat(value)) {
-            throw new IllegalArgumentException("Value must be in delimited format (e.g., \"123-45-67890\") : " + value);
+    public static KBRN valueOf(String value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value must not be null");
         }
-        return new KBRN(toDefaultFormat(value));
+        return new KBRN(value.replace(DELIMITER, ""));
     }
 
     /**
@@ -87,7 +75,7 @@ public class KBRN {
      * @return 구분 기호가 있는 형식 (예: "123-45-67890") 의 사업자등록번호 문자열
      */
     public String delimitedValue() {
-        return KbrnFormatUtils.toDelimitedFormat(value);
+        return String.join(DELIMITER, serialPrefix(), businessTypeCode(), serialSuffix());
     }
 
     /**
@@ -148,13 +136,13 @@ public class KBRN {
      * 사업자등록번호의 객체 문자열 표현을 반환합니다.
      * KBRN 을 문자열로 변환하는데 사용하지 않고, 디버깅이나 로깅시 사용합니다.
      *
-     * @return KBRN 객체의 문자 표현 (예: "KBRN{value='1234567890'}")
+     * @return KBRN 객체의 문자 표현 (예: "KBRN{'123-45-67890'}")
      * @see #value()
      * @see #delimitedValue()
      */
     @Override
     public String toString() {
-        return String.format("KBRN{value='%s'}", value);
+        return String.format("KBRN{'%s'}", delimitedValue());
     }
 
     @Override

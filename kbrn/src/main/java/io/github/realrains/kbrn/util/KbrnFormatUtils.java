@@ -55,7 +55,7 @@ public final class KbrnFormatUtils {
         if (!isValidFormat(value)) {
             throw new IllegalArgumentException("Only default format KBRN can be converted to delimited format: " + value);
         }
-        return String.format("%s-%s-%s", value.substring(0, 3), value.substring(3, 5), value.substring(5));
+        return String.join("-", value.substring(0, 3), value.substring(3, 5), value.substring(5));
     }
 
     /**
