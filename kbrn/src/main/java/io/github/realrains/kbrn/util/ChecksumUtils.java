@@ -57,7 +57,6 @@ public final class ChecksumUtils {
      * @param value 10자리 숫자로 구성된 사업자등록번호 문자열.
      * @return 유효한 체크섬이면 true, 그렇지 않으면 false.
      * @throws IllegalArgumentException 주어진 값이 유효한 형식이 아닌 경우.
-     * @see KBRN#hasValidChecksum()
      */
     public static boolean hasValidChecksum(String value) {
         if (!isValidFormat(value)) {

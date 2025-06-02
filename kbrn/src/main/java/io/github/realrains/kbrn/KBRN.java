@@ -5,6 +5,7 @@ import io.github.realrains.kbrn.util.KbrnFormatUtils;
 
 import java.util.Objects;
 
+import static io.github.realrains.kbrn.util.KbrnFormatUtils.isValidDelimitedFormat;
 import static io.github.realrains.kbrn.util.KbrnFormatUtils.isValidFormat;
 
 /**
@@ -18,8 +19,8 @@ import static io.github.realrains.kbrn.util.KbrnFormatUtils.isValidFormat;
  * <pre>
  * {@code
  * KBRN kbrn = KBRN.from("1208147521");
- * KBRN kbrn2 = KBRN.fromDelimited("120-81-47521");
- * kbrn.equals(kbrn2);                 // true
+ * KBRN kbrn2 = KBRN.from("120-81-47521");
+ * println(kbrn.equals(kbrn2));        // true
  * println(kbrn.value());              // "1208147521"
  * println(kbrn.formattedValue());     // "120-81-47521"
  * println(kbrn.serialPrefix());       // "120"
@@ -43,6 +44,9 @@ public class KBRN {
         if (!isValidFormat(value)) {
             throw new IllegalArgumentException("Value must be in default format (e.g., \"1234567890\") : " + value);
         }
+        if (!ChecksumUtils.hasValidChecksum(value)) {
+            throw new IllegalArgumentException("Value must have a valid checksum: " + value);
+        }
         this.value = value;
     }
 
@@ -54,10 +58,10 @@ public class KBRN {
      * @throws IllegalArgumentException 주어진 값이 유효한 형식이 아닌 경우
      */
     public static KBRN valueOf(String value) {
-        if (value == null) {
-            throw new IllegalArgumentException("Value must not be null");
+        if (isValidFormat(value) || isValidDelimitedFormat(value)) {
+            return new KBRN(value.replace(DELIMITER, ""));
         }
-        return new KBRN(value.replace(DELIMITER, ""));
+        throw new IllegalArgumentException("Value must be in valid format (e.g., \"1234567890\" or \"123-45-67890\") : " + value);
     }
 
     /**
