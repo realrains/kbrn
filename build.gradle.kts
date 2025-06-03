@@ -13,7 +13,6 @@ allprojects {
 subprojects {
   apply(plugin = "java")
   apply(plugin = "maven-publish")
-  apply(plugin = "signing")
 
   version = extra["artifactVersion"] as String
 
@@ -30,7 +29,7 @@ subprojects {
     repositories {
       maven {
         name = "GitHubPackages"
-        url = uri("https://maven.pkg.github.com/realrain/kbrn")
+        url = uri("https://maven.pkg.github.com/realrains/kbrn")
         credentials {
           username = System.getenv("GITHUB_ACTOR")
           password = System.getenv("GITHUB_TOKEN")

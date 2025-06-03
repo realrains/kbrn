@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/realrains/kbrn/actions/workflows/ci.yml/badge.svg)](https://github.com/realrains/kbrn/actions/workflows/ci.yml)
 
-**kbrn** 은 대한민국의 사업자등록번호 (Korean Business Registration Number) 를 처리하기 위한 Java 라이브러리입니다.
+**kbrn** _(Korean Business Registration Number)_ 은 대한민국의 사업자등록번호를 처리하기 위한 Java 라이브러리입니다.
 사업자등록번호의 형식 검증, 체크섬 계산을 통한 유효성 검사, 형식 변환 등을 간편하게 처리할 수 있도록 도와줍니다.
 
 ## Requirements
