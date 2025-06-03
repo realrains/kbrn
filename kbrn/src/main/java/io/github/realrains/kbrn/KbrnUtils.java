@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
  */
 public class KbrnUtils {
 
-    private static final Pattern DEFAULT_KBRN_PATTERN = Pattern.compile("^\\d{10}$");
+    private static final Pattern PLAIN_KBRN_PATTERN = Pattern.compile("^\\d{10}$");
     private static final Pattern DELIMITED_KBRN_PATTERN = Pattern.compile("^\\d{3}-\\d{2}-\\d{5}$");
     private static final char[] CHECKSUM_WEIGHTS = { 1, 3, 7, 1, 3, 7, 1, 3, 5 };
 
@@ -34,7 +34,7 @@ public class KbrnUtils {
      * @return 값이 유효한 사업자등록번호 형식을 만족하면 {@code true}, 그렇지 않으면 {@code false}
      */
     public static boolean isValidFormat(@Nullable String value) {
-        return isValidDefaultFormat(value) || isValidDelimitedFormat(value);
+        return isValidPlainFormat(value) || isValidDelimitedFormat(value);
     }
 
     /**
@@ -42,11 +42,11 @@ public class KbrnUtils {
      *
      * @param value 검증할 값
      * @return 값이 기본 사업자등록번호 형식을 만족하면 {@code true}, 그렇지 않으면 {@code false}
-     * @see #DEFAULT_KBRN_PATTERN
+     * @see #PLAIN_KBRN_PATTERN
      */
-    public static boolean isValidDefaultFormat(@Nullable String value) {
+    public static boolean isValidPlainFormat(@Nullable String value) {
         if (value == null) return false;
-        return DEFAULT_KBRN_PATTERN.matcher(value).matches();
+        return PLAIN_KBRN_PATTERN.matcher(value).matches();
     }
 
     /**
@@ -69,13 +69,13 @@ public class KbrnUtils {
      * @return 구분자로 구분된 형식의 사업자등록번호 문자열 (예: {@code "120-81-47521"})
      * @throws IllegalArgumentException {@code value} 가 숫자로 구성된 10자리 형식의 사업자등록번호 문자열이 아닌 경우
      * @see #DELIMITED_KBRN_PATTERN
-     * @see #DEFAULT_KBRN_PATTERN
+     * @see #PLAIN_KBRN_PATTERN
      */
     public static String toDelimitedFormat(String value) {
         if (isValidDelimitedFormat(value)) {
             return value;
         }
-        if (!isValidDefaultFormat(value)) {
+        if (!isValidPlainFormat(value)) {
             throw new IllegalArgumentException("Cannot convert to delimited format: " + value);
         }
         return String.join("-", value.substring(0, 3), value.substring(3, 5), value.substring(5));
@@ -88,11 +88,11 @@ public class KbrnUtils {
      * @param value 구분자로 구분된 형식의 사업자등록번호 문자열 (예: {@code "120-81-47521"})
      * @return 숫자로 구성된 10자리 형식의 사업자등록번호 문자열 (예: {@code "1208147521"})
      * @throws IllegalArgumentException {@code value} 가 올바른 사업자등록번호 문자열이 아닌 경우
-     * @see #DEFAULT_KBRN_PATTERN
+     * @see #PLAIN_KBRN_PATTERN
      * @see #DELIMITED_KBRN_PATTERN
      */
-    public static String toDefaultFormat(String value) {
-        if (isValidDefaultFormat(value)) {
+    public static String toPlainFormat(String value) {
+        if (isValidPlainFormat(value)) {
             return value;
         }
         if (!isValidDelimitedFormat(value)) {
@@ -109,7 +109,7 @@ public class KbrnUtils {
      * @throws IllegalArgumentException 입력이 유효한 길이 9의 문자 배열이 아니거나 숫자가 아닌 문자를 포함하는 경우.
      * @see KBRN#body()
      */
-    public static char checksum(CharSequence body) {
+    public static char checksumOf(CharSequence body) {
         if (body.length() != 9) {
             throw new IllegalArgumentException("Body must be a character array of length 9");
         }
@@ -131,13 +131,13 @@ public class KbrnUtils {
      * @param value 사업자등록번호 문자열
      * @return 사업자등록번호가 유효한 체크섬을 포함하고 있으면 {@code true}, 그렇지 않으면 {@code false}.
      * @throws IllegalArgumentException 주어진 값이 유효한 형식이 아닌 경우.
-     * @see #checksum(CharSequence)
+     * @see #checksumOf(CharSequence)
      */
     public static boolean hasValidChecksum(String value) {
-        String normalized = toDefaultFormat(value);
+        String normalized = toPlainFormat(value);
         String body = normalized.substring(0, 9);
         char expected = normalized.charAt(9);
-        return expected == checksum(body);
+        return expected == checksumOf(body);
     }
 
 }

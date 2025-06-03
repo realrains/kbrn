@@ -3,7 +3,7 @@ package io.github.realrains.kbrn;
 import java.util.Objects;
 
 import static io.github.realrains.kbrn.KbrnUtils.hasValidChecksum;
-import static io.github.realrains.kbrn.KbrnUtils.isValidDefaultFormat;
+import static io.github.realrains.kbrn.KbrnUtils.isValidPlainFormat;
 import static io.github.realrains.kbrn.KbrnUtils.isValidDelimitedFormat;
 
 /**
@@ -37,7 +37,7 @@ public class KBRN {
     private final String value;
 
     protected KBRN(String value) {
-        if (!isValidDefaultFormat(value)) {
+        if (!isValidPlainFormat(value)) {
             throw new IllegalArgumentException("Value must be in default format (e.g., \"1234567890\") : " + value);
         }
         if (!hasValidChecksum(value)) {
@@ -54,7 +54,7 @@ public class KBRN {
      * @throws IllegalArgumentException 주어진 값이 유효한 형식이 아닌 경우
      */
     public static KBRN valueOf(String value) {
-        if (isValidDefaultFormat(value) || isValidDelimitedFormat(value)) {
+        if (isValidPlainFormat(value) || isValidDelimitedFormat(value)) {
             return new KBRN(value.replace(DELIMITER, ""));
         }
         throw new IllegalArgumentException("Value must be in valid format (e.g., \"1234567890\" or \"123-45-67890\") : " + value);
