@@ -1,7 +1,10 @@
+import org.jreleaser.model.Active
+
 plugins {
   id("java")
   id("maven-publish")
   id("signing")
+  id("org.jreleaser") version "1.18.0"
 }
 
 allprojects {
@@ -9,14 +12,14 @@ allprojects {
     mavenCentral()
   }
   group = "io.github.realrains.kbrn"
+  version = ext["artifactVersion"] as String
 }
 
 subprojects {
   apply(plugin = "java")
   apply(plugin = "maven-publish")
   apply(plugin = "signing")
-
-  version = extra["artifactVersion"] as String
+  apply(plugin = "org.jreleaser")
 
   java {
     toolchain {
@@ -27,23 +30,40 @@ subprojects {
     targetCompatibility = JavaVersion.VERSION_11
   }
 
+  // https://jreleaser.org/guide/latest/examples/maven/maven-central.html#_portal_publisher_api
+  jreleaser {
+    project {
+      name.set("kbrn")
+      authors.add("Jinwoo Jang")
+      license.set("MIT License")
+
+      links {
+        homepage.set("https://maven.pkg.github.com/realrains/kbrn")
+      }
+    }
+    signing {
+      active.set(Active.NEVER)
+      armored.set(true)
+    }
+    deploy {
+      maven {
+        mavenCentral {
+          create("release-deploy") {
+            active.set(Active.RELEASE)
+            url = "https://central.sonatype.com/api/v1/publisher"
+            stagingRepository("build/staging-deploy")
+            sign = false
+            applyMavenCentralRules = true
+          }
+        }
+      }
+    }
+  }
+
   publishing {
     repositories {
       maven {
-        name = "GitHubPackages"
-        url = uri("https://maven.pkg.github.com/realrains/kbrn")
-        credentials {
-          username = System.getenv("GITHUB_ACTOR")
-          password = System.getenv("GITHUB_TOKEN")
-        }
-      }
-      maven {
-        name = "OSSRH"
-        url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-        credentials {
-          username = System.getenv("MAVEN_USERNAME")
-          password = System.getenv("MAVEN_PASSWORD")
-        }
+        url = uri(layout.buildDirectory.dir("staging-deploy").get().asFile)
       }
     }
     publications {
