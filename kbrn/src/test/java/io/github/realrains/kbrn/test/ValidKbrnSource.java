@@ -5,10 +5,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.junit.jupiter.params.provider.CsvFileSource;
+import org.junit.jupiter.params.provider.ArgumentsSource;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@CsvFileSource(resources = "/kbrn_sample.csv", numLinesToSkip = 1)
+@ArgumentsSource(ValidKbrnArgumentProvider.class)
 public @interface ValidKbrnSource {
+    boolean plain() default true;
+    boolean delimited() default true;
 }

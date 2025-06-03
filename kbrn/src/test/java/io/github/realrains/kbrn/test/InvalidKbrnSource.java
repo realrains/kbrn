@@ -7,8 +7,7 @@ import java.lang.annotation.Target;
 
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
-import static io.github.realrains.kbrn.test.InvalidKbrnSource.Strategy.ADD_ALPHABET;
-import static io.github.realrains.kbrn.test.InvalidKbrnSource.Strategy.ADD_DIGIT;
+import static io.github.realrains.kbrn.test.InvalidKbrnSource.Strategy.ADD;
 import static io.github.realrains.kbrn.test.InvalidKbrnSource.Strategy.CHECKSUM;
 import static io.github.realrains.kbrn.test.InvalidKbrnSource.Strategy.MOVE_HYPHEN;
 import static io.github.realrains.kbrn.test.InvalidKbrnSource.Strategy.REMOVE;
@@ -21,16 +20,18 @@ public @interface InvalidKbrnSource {
     enum Strategy {
         CHECKSUM,
         REMOVE,
-        ADD_DIGIT,
-        ADD_ALPHABET,
+        ADD,
         MOVE_HYPHEN
     }
+
+    boolean plain() default true;
+
+    boolean delimited() default true;
 
     Strategy[] violations() default {
         CHECKSUM,
         REMOVE,
-        ADD_DIGIT,
-        ADD_ALPHABET,
+        ADD,
         MOVE_HYPHEN
     };
 }
