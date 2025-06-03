@@ -1,6 +1,7 @@
 plugins {
   id("java")
   id("maven-publish")
+  id("signing")
 }
 
 allprojects {
@@ -13,6 +14,7 @@ allprojects {
 subprojects {
   apply(plugin = "java")
   apply(plugin = "maven-publish")
+  apply(plugin = "signing")
 
   version = extra["artifactVersion"] as String
 
@@ -33,6 +35,14 @@ subprojects {
         credentials {
           username = System.getenv("GITHUB_ACTOR")
           password = System.getenv("GITHUB_TOKEN")
+        }
+      }
+      maven {
+        name = "OSSRH"
+        url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+        credentials {
+          username = System.getenv("MAVEN_USERNAME")
+          password = System.getenv("MAVEN_PASSWORD")
         }
       }
     }
@@ -67,5 +77,11 @@ subprojects {
         }
       }
     }
+  }
+  signing {
+    val pgpKey = System.getenv("PGP_KEY")
+    val pgpPassword = System.getenv("PGP_PASSWORD")
+    useInMemoryPgpKeys(pgpKey, pgpPassword)
+    sign(publishing.publications["maven"])
   }
 }
