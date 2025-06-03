@@ -26,7 +26,6 @@ import static io.github.realrains.kbrn.KbrnUtils.isValidDelimitedFormat;
  * println(kbrn.serialSuffix());       // "47521"
  * println(kbrn.body());               // "120814752"
  * println(kbrn.checksum());           // '1'
- * println(kbrn.hasValidChecksum());   // true
  * }
  * </pre>
  *
