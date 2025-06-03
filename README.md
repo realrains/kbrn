@@ -11,53 +11,61 @@
 
 ## Usage
 
-### 1. 사업자등록번호 문자열
+### 사업자등록번호 문자열
+
+**형식 및 체크섬 검증**
+
+```java
+KbrnUtils.isValid("1208147521");    // true
+KbrnUtils.isValid("120-81-47521");  // true
+KbrnUtils.isValid("120123");        // false, 형식 불일치
+KbrnUtils.isValid("1208147520");    // false, 체크섬 불일치
+KbrnUtils.isValid("120-81-47520");  // false, 체크섬 불일치
+```
 
 **형식 검증:**
 
 ```java
-// 기본 형식(10자리 숫자) 검증
-boolean isValid = KbrnUtils.isValidFormat("1208147521"); // true
+// 모든 사업자등록번호 형식 검증
+KbrnUtils.isValidFormat("1208147521");   // true
+KbrnUtils.isValidFormat("120-81-47521"); // true
 
-// 구분 기호 형식(3-2-5 자리 숫자) 검증
-boolean isDelimitedValid = KbrnUtils.isValidDelimitedFormat("120-81-47521"); // true
-```
+// 기본 형식 검증
+KbrnUtils.isValidPlainFormat("1208147521"); // true
 
-**형식 변환:**
-
-```java
-// 기본 형식 → 구분 기호 형식으로 변환
-String delimited = KbrnUtils.toDelimitedFormat("1208147521"); // "120-81-47521"
-
-// 구분 기호 형식 → 기본 형식으로 변환
-String plain = KbrnUtils.toDefaultFormat("120-81-47521"); // "1208147521"
+// 구분 기호로 분리된 형식 검증
+KbrnUtils.isValidDelimitedFormat("120-81-47521"); // true
 ```
 
 **체크섬 계산 및 검증:**
 
 ```java
 // 체크섬 계산
-String body = "120814752"; // 앞 9자리
-KbrnUtils.checksum(body); // '1'
+String body = "120814752";  // 앞 9자리
+KbrnUtils.checksumOf(body); // '1'
 
 // 체크섬 유효성 검증
-KbrnUtils.hasValidChecksum("1208147521"); // true
+KbrnUtils.hasValidChecksum("1208147521");   // true
+KbrnUtils.hasValidChecksum("1208147520");   // false
+KbrnUtils.hasValidChecksum("120-81-47521"); // true
+KbrnUtils.hasValidChecksum("120-81-47520"); // false
 ```
 
-### 2. 사업자등록번호 객체 (KBRN)
+**형식 변환:**
 
-더 풍부한 기능과 타입 안전성을 위해 `KBRN` 객체를 활용할 수 있습니다.
+```java
+KbrnUtils.toDelimitedFormat("1208147521"); // "120-81-47521"
+KbrnUtils.toPlainFormat("120-81-47521");   // "1208147521"
+```
+
+### 사업자등록번호 객체 (KBRN)
 
 **객체 생성:**
 
 ```java
-// 기본 형식의 사업자등록번호로 객체 생성
 KBRN kbrn1 = KBRN.valueOf("1208147521");
-
-// 구분 기호가 있는 형식으로 객체 생성
 KBRN kbrn2 = KBRN.valueOf("120-81-47521");
 
-// 두 객체는 동일합니다
 kbrn1.equals(kbrn2); // true
 ```
 
@@ -66,32 +74,23 @@ kbrn1.equals(kbrn2); // true
 ```java
 KBRN kbrn = KBRN.valueOf("120-81-47521");
 
-kbrn.value(); // "1208147521"
-kbrn.delimitedValue(); // "120-81-47521"
+kbrn.plainValue();      // "1208147521"
+kbrn.delimitedValue();  // "120-81-47521"
 ```
 
 **사업자등록번호 구성 요소 추출:**
 
 ```java
-KBRN kbrn = KBRN.from("120-81-47521");
+KBRN kbrn = KBRN.valueOf("120-81-47521");
 
-// 지역 코드 (앞 3자리)
-kbrn.serialPrefix(); // "120"
+kbrn.serialPrefix();      // "120" (일련번호, 앞 3자리)
+kbrn.businessTypeCode();  // "81" (업종코드, 중간 2자리)
+kbrn.serialSuffix();      // "47521" (일련번호, 마지막 5자리)
 
-// 업종 코드 (중간 2자리)
-kbrn.businessTypeCode(); // "81"
-
-// 일련번호 (뒤 5자리)
-kbrn.serialSuffix(); // "47521"
-
-// 체크섬 검사 대상 (앞 9자리)
-kbrn.body(); // "120814752"
-
-// 체크섬 값 (마지막 1자리)
-kbrn.checksum(); // '1'
+kbrn.body();              // "120814752" (체크섬 검사대상, 앞 9자리)
+kbrn.checksum();          // '1' (체크섬, 마지막 1자리)
 ```
 
 ## 라이센스
 
 이 프로젝트는 [LICENSE](/LICENSE) 파일에 명시된 라이센스에 따라 배포됩니다.
-

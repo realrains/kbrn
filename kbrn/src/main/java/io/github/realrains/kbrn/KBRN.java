@@ -65,7 +65,7 @@ public class KBRN {
      *
      * @return 10자리 숫자로 구성된 (예: 1234567890) 사업자등록번호 문자열
      */
-    public String value() {
+    public String plainValue() {
         return value;
     }
 
@@ -128,7 +128,7 @@ public class KBRN {
      * KBRN 을 문자열로 변환하는데 사용하지 않고, 디버깅이나 로깅시 사용합니다.
      *
      * @return KBRN 객체의 문자 표현 (예: "KBRN{'123-45-67890'}")
-     * @see #value()
+     * @see #plainValue()
      * @see #delimitedValue()
      */
     @Override

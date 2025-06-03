@@ -24,7 +24,7 @@ class KbrnTest {
     void create_kbrn_from_ten_digit_string(String value) {
         KBRN kbrn = KBRN.valueOf(value);
 
-        assertEquals(value, kbrn.value());
+        assertEquals(value, kbrn.plainValue());
     }
 
     @DisplayName("구분 기호가 있는 사업자등록번호 문자열로부터 KBRN 객체를 생성할 수 있다")
