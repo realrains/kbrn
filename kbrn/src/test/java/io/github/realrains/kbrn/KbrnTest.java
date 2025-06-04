@@ -110,7 +110,16 @@ class KbrnTest {
     void get_business_type_code() {
         KBRN kbrn = KBRN.valueOf("220-81-62517");
 
-        assertEquals("81", kbrn.businessTypeCode());
+        assertEquals("81", kbrn.businessEntityTypeCode());
+    }
+
+    @DisplayName("KBRN 객체에서 사업자 유형 타입을 올바르게 추출한다")
+    @Test
+    void get_business_entity_type() {
+        String value = "220-81-62517";
+        KBRN kbrn = KBRN.valueOf(value);
+
+        assertEquals(BusinessEntityType.of("81"), kbrn.businessEntityType());
     }
 
     @DisplayName("KBRN 객체에서 일련번호 접미사 (뒤 5자리) 를 올바르게 추출한다")

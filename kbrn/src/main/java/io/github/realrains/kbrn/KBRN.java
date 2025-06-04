@@ -75,7 +75,7 @@ public class KBRN {
      * @return 구분 기호가 있는 형식 (예: "123-45-67890") 의 사업자등록번호 문자열
      */
     public String delimitedValue() {
-        return String.join(DELIMITER, serialPrefix(), businessTypeCode(), serialSuffix());
+        return String.join(DELIMITER, serialPrefix(), businessEntityTypeCode(), serialSuffix());
     }
 
     /**
@@ -92,8 +92,17 @@ public class KBRN {
      *
      * @return 사업자등록번호 중간 2자리 문자열 (예: 1234567890 -> "45")
      */
-    public String businessTypeCode() {
+    public String businessEntityTypeCode() {
         return value.substring(3, 5);
+    }
+
+    /**
+     * 사업자등록번호의 법인구분 코드를 기반으로 사업자 유형을 반환합니다.
+     *
+     * @return 해당 사업자등록번호의 {@link BusinessEntityType} 열거형 값
+     */
+    public BusinessEntityType businessEntityType() {
+        return BusinessEntityType.of(businessEntityTypeCode());
     }
 
     /**
