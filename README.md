@@ -19,7 +19,7 @@
 <dependency>
   <groupId>io.github.realrains.kbrn</groupId>
   <artifactId>kbrn</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.2</version>
 </dependency>
 ```
 
@@ -27,7 +27,7 @@
 
 ```groovy
 dependencies {
-    implementation 'io.github.realrains.kbrn:kbrn:0.0.1'
+    implementation 'io.github.realrains.kbrn:kbrn:0.0.2'
 }
 ```
 
