@@ -3,7 +3,7 @@ package io.github.realrains.kbrn;
 /**
  * 사업자등록번호의 중앙 2자리 숫자가 의미하는 사업자 유형을 나타내는 열거형입니다.
  *
- * @see <a href="https://call.nts.go.kr/call/qna/selectQnaInfo.do?mi=1329">국세상담센터 > 자주묻는Q&A</a>
+ * @see <a href="https://call.nts.go.kr/call/qna/selectQnaInfo.do?mi=1329">국세상담센터</a>
  */
 public enum BusinessEntityType {
     /**
