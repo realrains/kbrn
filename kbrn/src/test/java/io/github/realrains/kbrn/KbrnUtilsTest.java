@@ -5,11 +5,13 @@ import io.github.realrains.kbrn.test.InvalidKbrnSource;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static io.github.realrains.kbrn.test.InvalidKbrnSource.Strategy.ADD;
 import static io.github.realrains.kbrn.test.InvalidKbrnSource.Strategy.CHECKSUM;
 import static io.github.realrains.kbrn.test.InvalidKbrnSource.Strategy.MOVE_HYPHEN;
 import static io.github.realrains.kbrn.test.InvalidKbrnSource.Strategy.REMOVE;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -47,7 +49,7 @@ class KbrnUtilsTest {
 
     @DisplayName("주어진 문자열이 올바른 사업자등록번호 형식이 아닌 경우 검사")
     @ParameterizedTest(name = "CASE {index} - {0}")
-    @InvalidKbrnSource(violations = {REMOVE, ADD, MOVE_HYPHEN})
+    @InvalidKbrnSource(violations = { REMOVE, ADD, MOVE_HYPHEN })
     void check_invalid_kbrn_format(String value) {
         assertFalse(KbrnUtils.isValidFormat(value));
     }
@@ -57,6 +59,28 @@ class KbrnUtilsTest {
     @NullAndEmptySource
     void check_null_or_empty_format(String value) {
         assertFalse(KbrnUtils.isValidFormat(value));
+    }
+
+    @DisplayName("주어진 문자열에 대한 체크섬을 계산")
+    @ParameterizedTest(name = "CASE {index} - {0}")
+    @ValidKbrnSource(delimited = false)
+    void calculate_kbrn_checksum(String value) {
+        String body = value.substring(0, 9);
+        char checksum = value.charAt(9);
+        assertEquals(checksum, KbrnUtils.checksumOf(body));
+    }
+
+    @DisplayName("9자리 숫자로 이루어진 문자가 아닌 경우 체크섬 계산 시 예외를 던짐")
+    @ParameterizedTest(name = "CASE {index} - {0}")
+    @ValueSource(strings = {
+        "",            // 빈 문자열
+        "1208147521",  // 10자리 숫자
+        "12081475A",   // 숫자가 아닌 문자 포함
+        "12081475",    // 8자리 숫자
+        "120-814-7521" // 구분자가 포함된 문자열
+    })
+    void calculate_invalid_kbrn_checksum(String value) {
+        assertThrows(IllegalArgumentException.class, () -> KbrnUtils.checksumOf(value));
     }
 
     @DisplayName("주어진 문자열이 올바른 사업자등록번호 체크섬을 가지는지 검사")
@@ -75,7 +99,7 @@ class KbrnUtilsTest {
 
     @DisplayName("체크섬 검사시 주어진 문자열이 올바른 사업자등록번호 형식이 아닌 경우 예외를 던짐")
     @ParameterizedTest(name = "CASE {index} - {0}")
-    @InvalidKbrnSource(violations = {REMOVE, ADD, MOVE_HYPHEN})
+    @InvalidKbrnSource(violations = { REMOVE, ADD, MOVE_HYPHEN })
     void check_invalid_kbrn_checksum_from_invalid_format(String value) {
         assertThrows(IllegalArgumentException.class, () -> KbrnUtils.hasValidChecksum(value));
     }
@@ -86,5 +110,4 @@ class KbrnUtilsTest {
     void check_null_or_empty_checksum(String value) {
         assertThrows(IllegalArgumentException.class, () -> KbrnUtils.hasValidChecksum(value));
     }
-
 }
