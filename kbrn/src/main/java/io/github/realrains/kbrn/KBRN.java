@@ -38,7 +38,7 @@ public class KBRN {
 
     protected KBRN(String value) {
         if (!isValidPlainFormat(value)) {
-            throw new IllegalArgumentException("Value must be in default format (e.g., \"1234567890\") : " + value);
+            throw new IllegalArgumentException("Value must be in plain format (e.g., \"1234567890\") : " + value);
         }
         if (!hasValidChecksum(value)) {
             throw new IllegalArgumentException("Value must have a valid checksum: " + value);
