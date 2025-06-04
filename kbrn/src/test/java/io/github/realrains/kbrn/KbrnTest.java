@@ -1,16 +1,16 @@
 package io.github.realrains.kbrn;
 
-import io.github.realrains.kbrn.test.InvalidKbrnSource;
-import io.github.realrains.kbrn.test.ValidKbrnSource;
+import io.github.realrains.kbrn.helper.InvalidKbrnSource;
+import io.github.realrains.kbrn.helper.ValidKbrnSource;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 
-import static io.github.realrains.kbrn.test.InvalidKbrnSource.Strategy.ADD;
-import static io.github.realrains.kbrn.test.InvalidKbrnSource.Strategy.CHECKSUM;
-import static io.github.realrains.kbrn.test.InvalidKbrnSource.Strategy.MOVE_HYPHEN;
-import static io.github.realrains.kbrn.test.InvalidKbrnSource.Strategy.REMOVE;
+import static io.github.realrains.kbrn.helper.InvalidKbrnSource.Strategy.ADD;
+import static io.github.realrains.kbrn.helper.InvalidKbrnSource.Strategy.CHECKSUM;
+import static io.github.realrains.kbrn.helper.InvalidKbrnSource.Strategy.MOVE_HYPHEN;
+import static io.github.realrains.kbrn.helper.InvalidKbrnSource.Strategy.REMOVE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

@@ -1,4 +1,4 @@
-package io.github.realrains.kbrn.test;
+package io.github.realrains.kbrn.helper;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

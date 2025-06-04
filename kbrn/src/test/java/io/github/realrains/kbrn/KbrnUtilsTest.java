@@ -1,16 +1,17 @@
 package io.github.realrains.kbrn;
 
-import io.github.realrains.kbrn.test.ValidKbrnSource;
-import io.github.realrains.kbrn.test.InvalidKbrnSource;
+import io.github.realrains.kbrn.helper.ValidKbrnSource;
+import io.github.realrains.kbrn.helper.InvalidKbrnSource;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import static io.github.realrains.kbrn.test.InvalidKbrnSource.Strategy.ADD;
-import static io.github.realrains.kbrn.test.InvalidKbrnSource.Strategy.CHECKSUM;
-import static io.github.realrains.kbrn.test.InvalidKbrnSource.Strategy.MOVE_HYPHEN;
-import static io.github.realrains.kbrn.test.InvalidKbrnSource.Strategy.REMOVE;
+import static io.github.realrains.kbrn.helper.InvalidKbrnSource.Strategy.ADD;
+import static io.github.realrains.kbrn.helper.InvalidKbrnSource.Strategy.CHECKSUM;
+import static io.github.realrains.kbrn.helper.InvalidKbrnSource.Strategy.MOVE_HYPHEN;
+import static io.github.realrains.kbrn.helper.InvalidKbrnSource.Strategy.REMOVE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -59,6 +60,81 @@ class KbrnUtilsTest {
     @NullAndEmptySource
     void check_null_or_empty_format(String value) {
         assertFalse(KbrnUtils.isValidFormat(value));
+    }
+
+    @DisplayName("주어진 문자열이 구분자를 포함한 올바른 사업자등록번호 형식인지 검사")
+    @ParameterizedTest(name = "CASE {index} - {0}")
+    @ValidKbrnSource(plain = false, delimited = true)
+    void check_valid_delimited_kbrn_format(String value) {
+        assertTrue(KbrnUtils.isValidDelimitedFormat(value));
+    }
+
+    @DisplayName("주어진 문자열이 구분자를 포함한 올바른 사업자등록번호 형식이 아닌 경우 검사")
+    @ParameterizedTest(name = "CASE {index} - {0}")
+    @NullAndEmptySource
+    @ValidKbrnSource(plain = true, delimited = false)
+    @InvalidKbrnSource(violations = { REMOVE, ADD, MOVE_HYPHEN })
+    void check_invalid_delimited_kbrn_format(String value) {
+        assertFalse(KbrnUtils.isValidDelimitedFormat(value));
+    }
+
+    @DisplayName("주어진 문자열이 숫자만으로 구성된 10자리 사업자등록번호 형식인지 검사")
+    @ParameterizedTest(name = "CASE {index} - {0}")
+    @ValidKbrnSource(plain = true, delimited = false)
+    void check_valid_plain_kbrn_format(String value) {
+        assertTrue(KbrnUtils.isValidPlainFormat(value));
+    }
+
+    @DisplayName("주어진 문자열이 숫자만으로 구성된 10자리 사업자등록번호 형식이 아닌 경우 검사")
+    @ParameterizedTest(name = "CASE {index} - {0}")
+    @ValidKbrnSource(plain = false, delimited = true)
+    @InvalidKbrnSource(violations = { REMOVE, ADD, MOVE_HYPHEN })
+    void check_invalid_plain_kbrn_format(String value) {
+        assertFalse(KbrnUtils.isValidPlainFormat(value));
+    }
+
+    @DisplayName("주어진 문자열을 구분자로 분리된 사업자등록번호 형식으로 변환")
+    @ParameterizedTest(name = "CASE {index} - {0}")
+    @ValidKbrnSource(plain = true, delimited = false)
+    void convert_to_delimited_kbrn_format(String value) {
+        String expected = value.substring(0, 3) + "-" + value.substring(3, 5) + "-" + value.substring(5);
+        assertEquals(expected, KbrnUtils.toDelimitedFormat(value));
+    }
+
+    @DisplayName("주어진 문자열이 구분자로 분리된 사업자등록번호 형식인 경우 변환 시 동일한 값을 반환")
+    @Test
+    void convert_to_delimited_kbrn_format_already_delimited() {
+        String value = "120-81-47521";
+        assertEquals(value, KbrnUtils.toDelimitedFormat(value));
+    }
+
+    @DisplayName("주어진 문자열이 기본 형식의 사업자등록번호가 아닌 경우 변환 시 예외를 던짐")
+    @Test
+    void convert_to_delimited_kbrn_format_invalid() {
+        String value = "120814752"; // 10자리 숫자
+        assertThrows(IllegalArgumentException.class, () -> KbrnUtils.toDelimitedFormat(value));
+    }
+
+    @DisplayName("주어진 문자열을 구분자로 분리된 사업자등록번호 형식에서 기본 형식으로 변환")
+    @ParameterizedTest(name = "CASE {index} - {0}")
+    @ValidKbrnSource(delimited = true, plain = false)
+    void convert_to_plain_kbrn_format(String value) {
+        String expected = value.replace("-", "");
+        assertEquals(expected, KbrnUtils.toPlainFormat(value));
+    }
+
+    @DisplayName("주어진 문자열이 기본 형식의 사업자등록번호인 경우 변환 시 동일한 값을 반환")
+    @Test
+    void convert_to_plain_kbrn_format_already_plain() {
+        String value = "1208147521";
+        assertEquals(value, KbrnUtils.toPlainFormat(value));
+    }
+
+    @DisplayName("주어진 문자열이 구분자로 분리된 사업자등록번호 형식이 아닌 경우 변환 시 예외를 던짐")
+    @Test
+    void convert_to_plain_kbrn_format_invalid() {
+        String value = "120-81-4752"; // 9자리 숫자
+        assertThrows(IllegalArgumentException.class, () -> KbrnUtils.toPlainFormat(value));
     }
 
     @DisplayName("주어진 문자열에 대한 체크섬을 계산")

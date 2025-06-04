@@ -1,4 +1,4 @@
-package io.github.realrains.kbrn.test;
+package io.github.realrains.kbrn.helper;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -13,10 +13,10 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 
-import static io.github.realrains.kbrn.test.InvalidKbrnSource.Strategy.ADD;
-import static io.github.realrains.kbrn.test.InvalidKbrnSource.Strategy.CHECKSUM;
-import static io.github.realrains.kbrn.test.InvalidKbrnSource.Strategy.MOVE_HYPHEN;
-import static io.github.realrains.kbrn.test.InvalidKbrnSource.Strategy.REMOVE;
+import static io.github.realrains.kbrn.helper.InvalidKbrnSource.Strategy.ADD;
+import static io.github.realrains.kbrn.helper.InvalidKbrnSource.Strategy.CHECKSUM;
+import static io.github.realrains.kbrn.helper.InvalidKbrnSource.Strategy.MOVE_HYPHEN;
+import static io.github.realrains.kbrn.helper.InvalidKbrnSource.Strategy.REMOVE;
 import static java.util.Objects.requireNonNull;
 
 public class InvalidKbrnArgumentProvider implements ArgumentsProvider {
