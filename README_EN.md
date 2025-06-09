@@ -3,7 +3,7 @@
 [![CI](https://github.com/realrains/kbrn/actions/workflows/ci.yml/badge.svg)](https://github.com/realrains/kbrn/actions/workflows/ci.yml)
 [![Publish](https://github.com/realrains/kbrn/actions/workflows/publish.yml/badge.svg)](https://github.com/realrains/kbrn/actions/workflows/publish.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.realrains.kbrn/kbrn.svg)](https://search.maven.org/artifact/io.github.realrains.kbrn/kbrn)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ***English** | [한국어](README.md)*
 
