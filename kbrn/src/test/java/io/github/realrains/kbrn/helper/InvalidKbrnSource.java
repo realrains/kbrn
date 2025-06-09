@@ -42,4 +42,16 @@ public @interface InvalidKbrnSource {
         ADD,
         MOVE_HYPHEN
     };
+
+    /**
+     * 생성할 최대 테스트 케이스 수. 0이면 제한 없음.
+     * @return 최대 테스트 케이스 수
+     */
+    int limit() default 0;
+
+    /**
+     * CHECKSUM 전략에서 생성할 잘못된 체크섬 개수
+     * @return 체크섬 변형 개수 (기본값: 3)
+     */
+    int checksumVariations() default 3;
 }

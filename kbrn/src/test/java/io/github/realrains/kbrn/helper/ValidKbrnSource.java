@@ -27,4 +27,10 @@ public @interface ValidKbrnSource {
      * @return {@code true} 이면 구분자로 분리된 형식의 사업자등록번호를 포함
      */
     boolean delimited() default true;
+    
+    /**
+     * 생성할 최대 테스트 케이스 수. 0이면 제한 없음.
+     * @return 최대 테스트 케이스 수
+     */
+    int limit() default 0;
 }

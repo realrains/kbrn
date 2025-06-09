@@ -70,7 +70,7 @@ class KbrnTest {
 
     @DisplayName("올바르지 않은 형식의 사업자등록번호 문자열로 KBRN 객체를 생성할 때 예외가 발생한다")
     @ParameterizedTest(name = "CASE {index} = {0}")
-    @InvalidKbrnSource(violations = { REMOVE, ADD, MOVE_HYPHEN })
+    @InvalidKbrnSource(violations = { REMOVE, ADD, MOVE_HYPHEN }, limit = 50)
     void create_kbrn_from_invalid_string(String value) {
         assertThrows(IllegalArgumentException.class, () -> KBRN.valueOf(value));
     }
@@ -84,7 +84,7 @@ class KbrnTest {
 
     @DisplayName("체크섬이 유효하지 않은 사업자등록번호 문자열로 KBRN 객체를 생성할 때 예외가 발생한다")
     @ParameterizedTest(name = "CASE {index} = {0}")
-    @InvalidKbrnSource(violations = { CHECKSUM })
+    @InvalidKbrnSource(violations = { CHECKSUM }, checksumVariations = 2, limit = 40)
     void create_kbrn_from_invalid_checksum(String value) {
         assertThrows(IllegalArgumentException.class, () -> KBRN.valueOf(value));
     }

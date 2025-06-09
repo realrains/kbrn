@@ -19,10 +19,14 @@ public class ValidKbrnArgumentProvider implements ArgumentsProvider {
         ValidKbrnSource ann = requireNonNull(context.getRequiredTestMethod().getAnnotation(ValidKbrnSource.class));
         boolean plain = ann.plain();
         boolean delimited = ann.delimited();
+        int limit = ann.limit();
+        
         InputStream is = getClass().getResourceAsStream("/kbrn_sample.csv");
         BufferedReader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
 
-        return reader.lines().flatMap(line -> {
+        Stream<Arguments> stream = reader.lines()
+            .limit(limit > 0 ? Math.min(limit, 50) : 50) // 최대 50개의 원본 데이터만 사용
+            .flatMap(line -> {
             String value = line.trim();
             Stream.Builder<Arguments> streamBuilder = Stream.builder();
 
@@ -35,5 +39,10 @@ public class ValidKbrnArgumentProvider implements ArgumentsProvider {
 
             return streamBuilder.build();
         });
+        
+        if (limit > 0 && limit < 100) {
+            return stream.limit(limit);
+        }
+        return stream;
     }
 }

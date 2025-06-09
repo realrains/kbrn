@@ -22,14 +22,14 @@ class KbrnUtilsTest {
 
     @DisplayName("주어진 문자열이 포맷과 체크섬이 올바른 사업자등록번호인지 검사")
     @ParameterizedTest(name = "CASE {index} - {0}")
-    @ValidKbrnSource
+    @ValidKbrnSource(limit = 30)
     void check_valid_kbrn(String value) {
         assertTrue(KbrnUtils.isValid(value));
     }
 
     @DisplayName("주어진 문자열이 포맷 또는 체크섬이 올바르지 않은 사업자등록번호인지 검사")
     @ParameterizedTest(name = "CASE {index} - {0}")
-    @InvalidKbrnSource
+    @InvalidKbrnSource(checksumVariations = 2, limit = 100)
     void check_invalid_kbrn(String value) {
         assertFalse(KbrnUtils.isValid(value));
     }
@@ -43,14 +43,14 @@ class KbrnUtilsTest {
 
     @DisplayName("주어진 문자열이 올바른 사업자등록번호 형식인지 검사")
     @ParameterizedTest(name = "CASE {index} - {0}")
-    @ValidKbrnSource
+    @ValidKbrnSource(limit = 30)
     void check_valid_kbrn_format(String value) {
         assertTrue(KbrnUtils.isValidFormat(value));
     }
 
     @DisplayName("주어진 문자열이 올바른 사업자등록번호 형식이 아닌 경우 검사")
     @ParameterizedTest(name = "CASE {index} - {0}")
-    @InvalidKbrnSource(violations = { REMOVE, ADD, MOVE_HYPHEN })
+    @InvalidKbrnSource(violations = { REMOVE, ADD, MOVE_HYPHEN }, limit = 50)
     void check_invalid_kbrn_format(String value) {
         assertFalse(KbrnUtils.isValidFormat(value));
     }
@@ -64,7 +64,7 @@ class KbrnUtilsTest {
 
     @DisplayName("주어진 문자열이 구분자를 포함한 올바른 사업자등록번호 형식인지 검사")
     @ParameterizedTest(name = "CASE {index} - {0}")
-    @ValidKbrnSource(plain = false, delimited = true)
+    @ValidKbrnSource(plain = false, delimited = true, limit = 20)
     void check_valid_delimited_kbrn_format(String value) {
         assertTrue(KbrnUtils.isValidDelimitedFormat(value));
     }
@@ -72,30 +72,30 @@ class KbrnUtilsTest {
     @DisplayName("주어진 문자열이 구분자를 포함한 올바른 사업자등록번호 형식이 아닌 경우 검사")
     @ParameterizedTest(name = "CASE {index} - {0}")
     @NullAndEmptySource
-    @ValidKbrnSource(plain = true, delimited = false)
-    @InvalidKbrnSource(violations = { REMOVE, ADD, MOVE_HYPHEN })
+    @ValidKbrnSource(plain = true, delimited = false, limit = 20)
+    @InvalidKbrnSource(violations = { REMOVE, ADD, MOVE_HYPHEN }, limit = 30)
     void check_invalid_delimited_kbrn_format(String value) {
         assertFalse(KbrnUtils.isValidDelimitedFormat(value));
     }
 
     @DisplayName("주어진 문자열이 숫자만으로 구성된 10자리 사업자등록번호 형식인지 검사")
     @ParameterizedTest(name = "CASE {index} - {0}")
-    @ValidKbrnSource(plain = true, delimited = false)
+    @ValidKbrnSource(plain = true, delimited = false, limit = 20)
     void check_valid_plain_kbrn_format(String value) {
         assertTrue(KbrnUtils.isValidPlainFormat(value));
     }
 
     @DisplayName("주어진 문자열이 숫자만으로 구성된 10자리 사업자등록번호 형식이 아닌 경우 검사")
     @ParameterizedTest(name = "CASE {index} - {0}")
-    @ValidKbrnSource(plain = false, delimited = true)
-    @InvalidKbrnSource(violations = { REMOVE, ADD, MOVE_HYPHEN })
+    @ValidKbrnSource(plain = false, delimited = true, limit = 20)
+    @InvalidKbrnSource(violations = { REMOVE, ADD, MOVE_HYPHEN }, limit = 30)
     void check_invalid_plain_kbrn_format(String value) {
         assertFalse(KbrnUtils.isValidPlainFormat(value));
     }
 
     @DisplayName("주어진 문자열을 구분자로 분리된 사업자등록번호 형식으로 변환")
     @ParameterizedTest(name = "CASE {index} - {0}")
-    @ValidKbrnSource(plain = true, delimited = false)
+    @ValidKbrnSource(plain = true, delimited = false, limit = 20)
     void convert_to_delimited_kbrn_format(String value) {
         String expected = value.substring(0, 3) + "-" + value.substring(3, 5) + "-" + value.substring(5);
         assertEquals(expected, KbrnUtils.toDelimitedFormat(value));
@@ -117,7 +117,7 @@ class KbrnUtilsTest {
 
     @DisplayName("주어진 문자열을 구분자로 분리된 사업자등록번호 형식에서 기본 형식으로 변환")
     @ParameterizedTest(name = "CASE {index} - {0}")
-    @ValidKbrnSource(delimited = true, plain = false)
+    @ValidKbrnSource(delimited = true, plain = false, limit = 20)
     void convert_to_plain_kbrn_format(String value) {
         String expected = value.replace("-", "");
         assertEquals(expected, KbrnUtils.toPlainFormat(value));
@@ -139,7 +139,7 @@ class KbrnUtilsTest {
 
     @DisplayName("주어진 문자열에 대한 체크섬을 계산")
     @ParameterizedTest(name = "CASE {index} - {0}")
-    @ValidKbrnSource(delimited = false)
+    @ValidKbrnSource(delimited = false, limit = 20)
     void calculate_kbrn_checksum(String value) {
         String body = value.substring(0, 9);
         char checksum = value.charAt(9);
@@ -161,21 +161,21 @@ class KbrnUtilsTest {
 
     @DisplayName("주어진 문자열이 올바른 사업자등록번호 체크섬을 가지는지 검사")
     @ParameterizedTest(name = "CASE {index} - {0}")
-    @ValidKbrnSource
+    @ValidKbrnSource(limit = 30)
     void check_valid_kbrn_checksum(String value) {
         assertTrue(KbrnUtils.hasValidChecksum(value));
     }
 
     @DisplayName("주어진 문자열이 체크섬이 올바르지 않은 경우 검사")
     @ParameterizedTest(name = "CASE {index} - {0}")
-    @InvalidKbrnSource(violations = CHECKSUM)
+    @InvalidKbrnSource(violations = CHECKSUM, checksumVariations = 2, limit = 40)
     void check_invalid_kbrn_checksum(String value) {
         assertFalse(KbrnUtils.hasValidChecksum(value));
     }
 
     @DisplayName("체크섬 검사시 주어진 문자열이 올바른 사업자등록번호 형식이 아닌 경우 예외를 던짐")
     @ParameterizedTest(name = "CASE {index} - {0}")
-    @InvalidKbrnSource(violations = { REMOVE, ADD, MOVE_HYPHEN })
+    @InvalidKbrnSource(violations = { REMOVE, ADD, MOVE_HYPHEN }, limit = 30)
     void check_invalid_kbrn_checksum_from_invalid_format(String value) {
         assertThrows(IllegalArgumentException.class, () -> KbrnUtils.hasValidChecksum(value));
     }
