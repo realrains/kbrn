@@ -31,14 +31,14 @@
 <dependency>
   <groupId>io.github.realrains.kbrn</groupId>
   <artifactId>kbrn</artifactId>
-  <version>0.0.2</version>
+  <version>0.0.3</version>
 </dependency>
 ```
 
 #### Gradle
 ```groovy
 dependencies {
-    implementation 'io.github.realrains.kbrn:kbrn:0.0.2'
+    implementation 'io.github.realrains.kbrn:kbrn:0.0.3'
 }
 ```
 
@@ -51,14 +51,14 @@ For JSON serialization/deserialization with Jackson:
 <dependency>
   <groupId>io.github.realrains.kbrn</groupId>
   <artifactId>kbrn-jackson</artifactId>
-  <version>0.0.2</version>
+  <version>0.0.3</version>
 </dependency>
 ```
 
 #### Gradle
 ```groovy
 dependencies {
-    implementation 'io.github.realrains.kbrn:kbrn-jackson:0.0.2'
+    implementation 'io.github.realrains.kbrn:kbrn-jackson:0.0.3'
 }
 ```
 
