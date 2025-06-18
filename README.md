@@ -42,6 +42,26 @@ dependencies {
 }
 ```
 
+### Jackson 지원 (선택사항)
+
+Jackson을 사용한 JSON 직렬화/역직렬화가 필요한 경우:
+
+#### Maven
+```xml
+<dependency>
+  <groupId>io.github.realrains.kbrn</groupId>
+  <artifactId>kbrn-jackson</artifactId>
+  <version>0.0.2</version>
+</dependency>
+```
+
+#### Gradle
+```groovy
+dependencies {
+    implementation 'io.github.realrains.kbrn:kbrn-jackson:0.0.2'
+}
+```
+
 ## 사용법
 
 ### 기본 검증
@@ -129,6 +149,38 @@ boolean plainOnly = KbrnUtils.isValidPlainFormat("1208147521"); // true
 
 // 구분자 형식만 허용  
 boolean delimitedOnly = KbrnUtils.isValidDelimitedFormat("120-81-47521"); // true
+```
+
+### Jackson 직렬화/역직렬화
+
+`kbrn-jackson` 모듈을 사용하면 KBRN 객체를 JSON으로 쉽게 변환할 수 있습니다:
+
+```java
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.realrain.kbrn.jackson.KbrnModule;
+
+// ObjectMapper에 KbrnModule 등록
+ObjectMapper mapper = new ObjectMapper();
+mapper.registerModule(new KbrnModule());
+
+// 직렬화
+KBRN kbrn = KBRN.valueOf("120-81-47521");
+String json = mapper.writeValueAsString(kbrn); // "120-81-47521"
+
+// 역직렬화
+KBRN deserialized = mapper.readValue("\"1208147521\"", KBRN.class);
+```
+
+Spring Boot에서는 `@Bean`으로 자동 등록할 수 있습니다:
+
+```java
+@Configuration
+public class JacksonConfig {
+    @Bean
+    public Module kbrnModule() {
+        return new KbrnModule();
+    }
+}
 ```
 
 ## API 문서

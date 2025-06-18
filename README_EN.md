@@ -42,6 +42,26 @@ dependencies {
 }
 ```
 
+### Jackson Support (Optional)
+
+For JSON serialization/deserialization with Jackson:
+
+#### Maven
+```xml
+<dependency>
+  <groupId>io.github.realrains.kbrn</groupId>
+  <artifactId>kbrn-jackson</artifactId>
+  <version>0.0.2</version>
+</dependency>
+```
+
+#### Gradle
+```groovy
+dependencies {
+    implementation 'io.github.realrains.kbrn:kbrn-jackson:0.0.2'
+}
+```
+
 ## Usage
 
 ### Basic Validation
@@ -129,6 +149,38 @@ boolean plainOnly = KbrnUtils.isValidPlainFormat("1208147521"); // true
 
 // Delimited format only  
 boolean delimitedOnly = KbrnUtils.isValidDelimitedFormat("120-81-47521"); // true
+```
+
+### Jackson Serialization/Deserialization
+
+With the `kbrn-jackson` module, you can easily convert KBRN objects to/from JSON:
+
+```java
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.realrain.kbrn.jackson.KbrnModule;
+
+// Register KbrnModule with ObjectMapper
+ObjectMapper mapper = new ObjectMapper();
+mapper.registerModule(new KbrnModule());
+
+// Serialization
+KBRN kbrn = KBRN.valueOf("120-81-47521");
+String json = mapper.writeValueAsString(kbrn); // "120-81-47521"
+
+// Deserialization
+KBRN deserialized = mapper.readValue("\"1208147521\"", KBRN.class);
+```
+
+For Spring Boot applications, you can auto-register with `@Bean`:
+
+```java
+@Configuration
+public class JacksonConfig {
+    @Bean
+    public Module kbrnModule() {
+        return new KbrnModule();
+    }
+}
 ```
 
 ## API Documentation
