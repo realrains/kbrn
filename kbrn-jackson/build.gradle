@@ -4,7 +4,17 @@ plugins {
 
 dependencies {
     api project(':kbrn')
-    api 'com.fasterxml.jackson.core:jackson-databind:2.15.3'
+    
+    // Jackson databind with flexible version range
+    // Supports Jackson 2.12.x through 2.15.x (Java 8+ required for 2.13+)
+    api('com.fasterxml.jackson.core:jackson-databind') {
+        version {
+            // Minimum 2.12.0 for better compatibility
+            // Maximum 2.19.999 to avoid breaking changes in 2.16+
+            strictly '[2.12.0, 2.19.999]'
+            prefer '2.19.0'
+        }
+    }
     
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
     testImplementation 'org.assertj:assertj-core:3.24.2'
