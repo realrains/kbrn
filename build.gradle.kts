@@ -68,12 +68,12 @@ subprojects {
     }
     publications {
       create<MavenPublication>("maven") {
-        artifactId = "kbrn"
+        artifactId = project.findProperty("artifactId") as String? ?: project.name
         from(components["java"])
 
         pom {
-          name.set("kbrn")
-          description.set("Korean Business Registration Number validation library for Java")
+          name.set(project.findProperty("artifactName") as String? ?: project.name)
+          description.set(project.findProperty("artifactDescription") as String? ?: "")
           url.set("https://github.com/realrains/kbrn")
 
           licenses {
@@ -101,7 +101,9 @@ subprojects {
   signing {
     val pgpKey = System.getenv("PGP_KEY")
     val pgpPassword = System.getenv("PGP_PASSWORD")
-    useInMemoryPgpKeys(pgpKey, pgpPassword)
-    sign(publishing.publications["maven"])
+    if (!pgpKey.isNullOrEmpty() && !pgpPassword.isNullOrEmpty()) {
+      useInMemoryPgpKeys(pgpKey, pgpPassword)
+      sign(publishing.publications["maven"])
+    }
   }
 }
